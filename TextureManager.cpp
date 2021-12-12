@@ -46,11 +46,13 @@ GLuint TextureManager::_loadAndRegisterTexture(const char* FILENAME) {
         // TODO #02
         glBindTexture(GL_TEXTURE_2D, textureHandle);
 
-        // TODO #03
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+
+        // TODO #03
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+;
         // TODO #04
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
         // TODO #05
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         // gl texture wrap s , gl repeat
@@ -69,6 +71,8 @@ GLuint TextureManager::_loadAndRegisterTexture(const char* FILENAME) {
                 GL_UNSIGNED_BYTE,
                 data
         );
+
+        glGenerateMipmap(GL_TEXTURE_2D);
 
         fprintf( stdout, "[INFO]: %s texture map read in with handle %d\n", FILENAME, textureHandle);
 

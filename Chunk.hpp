@@ -22,8 +22,8 @@ public:
     ~Chunk();
     void generateChunk(glm::vec3 center);
     void drawChunk(glm::mat4 viewMtx, glm::mat4 projMtx);
-    void deleteBlock(int x, int y, int z);
-    void addBlock(int x, int y, int z);
+    bool deleteBlock(int x, int y, int z);
+    bool addBlock(int x, int y, int z);
     void setGenerationMode();
 
 
@@ -31,8 +31,6 @@ private:
     struct block_attributes {
         int x,y,z;
     };
-
-
 
     glm::mat4* modelMatrices;
     GLuint _instanceMatrix;

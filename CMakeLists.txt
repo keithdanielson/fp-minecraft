@@ -29,11 +29,9 @@ elseif( APPLE AND ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 elseif( UNIX AND ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
     include_directories("/usr/local/include")
     include_directories("./include/")
-    include_directories("/home/keith/Coding/Computer Graphics/include")
+    include_directories("/home/cmmeyers/Dropbox/Graphics/include")
     # update the lib directory location
     target_link_directories(${PROJECT_NAME} PUBLIC "/usr/local/lib")
     target_link_directories(${PROJECT_NAME} PUBLIC "/usr/lib64")
     target_link_libraries(${PROJECT_NAME} OpenGL glfw GLEW)
-
-
 endif()

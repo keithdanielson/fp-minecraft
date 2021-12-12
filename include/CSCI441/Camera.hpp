@@ -74,6 +74,8 @@ namespace CSCI441 {
         /// \desc returns the current phi value in radians
         [[nodiscard]] GLfloat getPhi() const { return _phi; }
 
+        [[nodiscard]] glm::vec3 getDirectionVec() const { return _direction; }
+
         /// \desc sets the camera's position in world space
         /// \param pos the new camera world space position
         void setPosition( glm::vec3 pos ) { _position = pos; }

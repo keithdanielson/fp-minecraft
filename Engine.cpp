@@ -165,11 +165,12 @@ void Engine::_setupBuffers() {
                            _blockShaderAttributeLocations.vPos,
                            _blockShaderAttributeLocations.vertexNormal,
                            _blockShaderAttributeLocations.texCoord);
-    stoneBlock->setTexture("stone", _textureManager->getTextureHandle("stone"));
+    stoneBlock->setTexture("dirt", _textureManager->getTextureHandle("dirt"));
 
     // Chunks
     _chunk = new Chunk(stoneBlock);
     _chunk->generateChunk(glm::vec3(0,0,0));
+
 }
 
 void Engine::_setupScene() {
@@ -274,6 +275,7 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
     _steve->drawFullCharacter(modelMtxSteve, viewMtx, projMtx);
     //// END DRAWING MODELS ////
     _chunk->drawChunk(viewMtx, projMtx);
+
 }
 
 void Engine::_updateScene() {
@@ -399,6 +401,15 @@ void Engine::_updateScene() {
         }
         else if (_keys[GLFW_KEY_S]) {
             _freeCam->moveBackward(_cameraSpeed.x*5);
+        }else if (_keys[GLFW_KEY_T]){
+            for (float i = .1; i <= 5; i = i + 0.05f){
+                GLfloat x = GLfloat(i);
+                glm::vec3 direction = x * _freeCam->getDirectionVec()  + _freeCam->getPosition();
+                if (_chunk->deleteBlock(int(direction.x), int(direction.y), int(direction.z))){
+                    _keys[GLFW_KEY_T] = false;
+                    break;
+                }
+            }
         }
 
     }
@@ -422,6 +433,15 @@ void Engine::_updateScene() {
         povDisplayed= !povDisplayed;
 	_keys[GLFW_KEY_2] = false;//consume that input
     }
+
+//    for (int i = 1; i <= 10; ++i){
+//        GLfloat x = GLfloat(i);
+//        glm::vec3 direction = x * _freeCam->getDirectionVec()  + _freeCam->getPosition();
+////                if (_chunk->deleteBlock(int(direction.x), int(direction.y), int(direction.z))){
+////                    _keys[GLFW_KEY_T] = false;
+////                    break;
+////                }
+//    }
 }
 
 void Engine::run() {

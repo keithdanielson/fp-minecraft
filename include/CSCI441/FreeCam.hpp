@@ -75,4 +75,7 @@ inline void CSCI441::FreeCam::_updateFreeCameraViewMatrix() {
     computeViewMatrix();
 }
 
+
+
+
 #endif // CSCI441_FREE_CAM_HPP

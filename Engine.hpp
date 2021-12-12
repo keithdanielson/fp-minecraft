@@ -99,6 +99,7 @@ private:
     /// \desc chunk
     Chunk* _chunk;
 
+    std::vector<Chunk*> _chunks;
 
     /// \desc the size of the world (controls the ground size and locations of buildings)
     static constexpr GLfloat WORLD_SIZE = 55.0f;

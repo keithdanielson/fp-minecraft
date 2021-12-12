@@ -15,23 +15,22 @@ Chunk::~Chunk() {
 }
 
 
-void Chunk::deleteBlock(int x, int y, int z) {
+bool Chunk::deleteBlock(int x, int y, int z) {
     // iterate through _blockInformation to find block w/ matching cords (x + y + z) = index
     // if a _blockInformation is found we can delete that object
     for (int i = 0; i < _blockInformation.size(); ++i){
         auto block_attr = _blockInformation[i];
         if (block_attr.x == x && block_attr.y == y && block_attr.z == z){
             _blockInformation.erase(_blockInformation.begin() + i);
-            std::cout << "Deleting block" << std::endl;
-            return;
+            _regenerateChunk();
+            return true;
         }
     }
-    std::cerr << "Could not find block in chunk" << std::endl;
 
-    _regenerateChunk();
+    return false;
 }
 
-void Chunk::addBlock(int x, int y, int z) {
+bool Chunk::addBlock(int x, int y, int z) {
     // iterate through _blockInformation to find block w/ matching cords (x + y + z) = index
     // figure out the orientation of block viewed
     // add _block and _blockInformation at corresponding index
@@ -79,7 +78,7 @@ void Chunk::_transferChunkToGPU(std::vector<glm::mat4> blocks) {
     glGenBuffers(1, &_instanceMatrix);
     glBindBuffer(GL_ARRAY_BUFFER, _instanceMatrix);
     // transfer the entire array
-    glBufferData(GL_ARRAY_BUFFER, CHUNK_WIDTH * CHUNK_WIDTH * CHUNK_HEIGHT * sizeof(glm::mat4), &blocks[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, blocks.size() * sizeof(glm::mat4), &blocks[0], GL_STATIC_DRAW);
 
     glBindVertexArray(_block->getBlockVAO());
     // vertex attributes
@@ -103,9 +102,8 @@ void Chunk::_transferChunkToGPU(std::vector<glm::mat4> blocks) {
 
 void Chunk::drawChunk(glm::mat4 viewMtx, glm::mat4 projMtx) {
     int amount = CHUNK_WIDTH;
-    _block->drawBlock(CHUNK_WIDTH * CHUNK_WIDTH * CHUNK_HEIGHT, viewMtx, projMtx);
+    _block->drawBlock(_blockInformation.size(), viewMtx, projMtx);
     glBindVertexArray(0);
-    std::cout << "63 : " << glGetError() << std::endl;
 }
 
 
