@@ -74,6 +74,7 @@ private:
     /// \desc boolean array tracking each key state.  if true, then the key is in a pressed or held
     /// down state.  if false, then the key is in a released state and not being interacted with
     GLboolean _keys[NUM_KEYS];
+    GLboolean _repeat[NUM_KEYS];
 
     GLboolean povDisplayed = false;
 
@@ -215,6 +216,8 @@ private:
     /// \param viewMtx camera view matrix
     /// \param projMtx camera projection matrix
     void _computeAndSendMatrixUniforms(glm::mat4 modelMtx, glm::mat4 viewMtx, glm::mat4 projMtx) const;
+
+    GLuint loadCubeMap(std::vector<std::string> faces);
 };
 /// \desc functions for user interactions
 void keyboard_callback(GLFWwindow *window, int key, int scancode, int action, int mods );

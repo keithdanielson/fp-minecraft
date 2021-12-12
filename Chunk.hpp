@@ -23,6 +23,7 @@ public:
     void generateChunk(glm::vec3 center);
     void drawChunk(glm::mat4 viewMtx, glm::mat4 projMtx);
     bool deleteBlock(int x, int y, int z);
+    bool findBlock(int x, int y, int z);
     bool addBlock(int x, int y, int z);
     void setGenerationMode();
 

@@ -19,6 +19,7 @@ Engine::Engine(int OPENGL_MAJOR_VERSION, int OPENGL_MINOR_VERSION,
          : CSCI441::OpenGLEngine(OPENGL_MAJOR_VERSION, OPENGL_MINOR_VERSION, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE) {
 
     for(auto& _key : _keys) _key = GL_FALSE;
+    for(auto& _rep : _repeat) _rep = GL_FALSE;
     _mousePosition = glm::vec2(MOUSE_UNINITIALIZED, MOUSE_UNINITIALIZED );
     _leftMouseButtonState = GLFW_RELEASE;
 }
@@ -30,10 +31,13 @@ Engine::~Engine() {
 
 void Engine::handleKeyEvent(GLint key, GLint action) {
     if(key != GLFW_KEY_UNKNOWN){
-	if (key == GLFW_KEY_0)
-        	_keys[key] = ((action == GLFW_RELEASE));
-    	else 
-        	_keys[key] = ((action == GLFW_PRESS) || (action == GLFW_REPEAT));
+	if (key == GLFW_KEY_0){
+        _keys[key] = ((action == GLFW_RELEASE));
+    }
+    else{
+        _keys[key] = ((action == GLFW_PRESS) || (action == GLFW_REPEAT));
+    }
+
     }
     if(action == GLFW_PRESS) {
         switch( key ) {
@@ -374,7 +378,7 @@ void Engine::_updateScene() {
         if ( povDisplayed ) {
             // turn right
             switch (selectedHero) {
-                case 3: // Mayz hero
+                case 3: // steve
 			 {
                         glm::vec3 pos = _steve->position;
                         GLfloat head = _steve->headAngle;//get which dir the vehicle is faceing
@@ -401,17 +405,30 @@ void Engine::_updateScene() {
         }
         else if (_keys[GLFW_KEY_S]) {
             _freeCam->moveBackward(_cameraSpeed.x*5);
-        }else if (_keys[GLFW_KEY_T]){
-            for (float i = .1; i <= 5; i = i + 0.05f){
+        }else if (_keys[GLFW_KEY_G]){
+            _freeCam->recomputeOrientation();
+            for (float i = .1; i <= 4; i = i + 0.01f){
                 GLfloat x = GLfloat(i);
                 glm::vec3 direction = x * _freeCam->getDirectionVec()  + _freeCam->getPosition();
                 if (_chunk->deleteBlock(int(direction.x), int(direction.y), int(direction.z))){
-                    _keys[GLFW_KEY_T] = false;
+                    _keys[GLFW_KEY_G] = false;
                     break;
                 }
             }
         }
-
+        else if (_keys[GLFW_KEY_T]){
+            glm::vec3 prev_direction = 0.05f * _freeCam->getDirectionVec()  + _freeCam->getPosition();
+            printf("\n\n\n");
+            for (float i = .1; i <= 4; i = i + 0.01f){
+                GLfloat x = GLfloat(i);
+                glm::vec3 direction = x * _freeCam->getDirectionVec()  + _freeCam->getPosition();
+                if (_chunk->findBlock(int(direction.x), int(direction.y), int(direction.z))){
+                    _chunk->addBlock((int)prev_direction.x, (int)prev_direction.y, (int)prev_direction.z);
+                    break;
+                }
+                prev_direction = direction;
+            }
+        }
     }
     // switching POV
     // 1: Hero, 2: FreeCam, 3: toggle POV
@@ -444,6 +461,36 @@ void Engine::_updateScene() {
 //    }
 }
 
+GLuint Engine::loadCubeMap(std::vector<std::string> faces){
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    int width, height, nrChannels;
+    for (unsigned int i = 0; i < faces.size(); i++)
+    {
+        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                         0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+            );
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    return textureID;
+}
 void Engine::run() {
     //  This is our draw loop - all rendering is done here.  We use a loop to keep the window open
     //	until the user decides to close the window and quit the program.  Without a loop, the

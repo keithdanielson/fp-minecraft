@@ -30,11 +30,27 @@ bool Chunk::deleteBlock(int x, int y, int z) {
     return false;
 }
 
+bool Chunk::findBlock(int x, int y, int z) {
+    for (int i = 0; i < _blockInformation.size(); ++i){
+        auto block_attr = _blockInformation[i];
+        if (block_attr.x == x && block_attr.y == y && block_attr.z == z){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
 bool Chunk::addBlock(int x, int y, int z) {
     // iterate through _blockInformation to find block w/ matching cords (x + y + z) = index
     // figure out the orientation of block viewed
     // add _block and _blockInformation at corresponding index
     // regenerate the chunk
+
+    _blockInformation.push_back({x,y,z});
+    _regenerateChunk();
 }
 
 

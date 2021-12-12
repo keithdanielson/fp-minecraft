@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/mp.dir/main.cpp.o CMakeFiles/mp.dir/Engine.cpp.o CMakeFiles/mp.dir/ArcCam.cpp.o CMakeFiles/mp.dir/FPCam.cpp.o CMakeFiles/mp.dir/Steve.cpp.o CMakeFiles/mp.dir/Block.cpp.o CMakeFiles/mp.dir/Chunk.cpp.o CMakeFiles/mp.dir/TextureManager.cpp.o CMakeFiles/mp.dir/Skybox.cpp.o -o mp   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib -lOpenGL -lglfw -lGLEW 
