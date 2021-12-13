@@ -132,6 +132,9 @@ private:
     ArcCam* _arcCam;
     /// \desc Free Camera
     CSCI441::FreeCam* _freeCam;
+
+    CSCI441::Camera* _currentCamera = nullptr;
+
     /// \desc First Person camera attached to a character
     FPCam* _fpCam;
     /// \desc pair of values to store the speed the camera can move/rotate.

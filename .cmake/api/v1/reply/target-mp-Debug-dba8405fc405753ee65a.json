@@ -65,14 +65,14 @@
 					"fragment" : "-g"
 				},
 				{
-					"fragment" : "-std=gnu++17"
+					"fragment" : "-std=gnu++1z"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/./include"
+					"path" : "/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/./include"
 				},
 				{
 					"backtrace" : 5,

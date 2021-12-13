@@ -2,6 +2,7 @@
 
 #include <CSCI441/objects.hpp>
 #include<iostream>
+#include<map>
 //*************************************************************************************
 //
 // Helper Functions
@@ -190,7 +191,6 @@ void Engine::_setupBuffers() {
     // Chunks
     _chunk = new Chunk(stoneBlock);
     _chunk->generateChunk(glm::vec3(0,0,0));
-
 }
 
 GLuint Engine::_loadAndRegisterTexture(const char* FILENAME) {
@@ -240,7 +240,7 @@ GLuint Engine::_loadAndRegisterTexture(const char* FILENAME) {
 
 void Engine::_setupTextures() {
 
-    _texHandles[TEXTURE_ID::MINES] = _loadAndRegisterTexture("sky.jpeg");
+    _texHandles[TEXTURE_ID::MINES] = _loadAndRegisterTexture("textures/skybox.jpg");
 
 }
 
@@ -332,6 +332,7 @@ void Engine::_cleanupBuffers() {
 // Rendering / Drawing Functions - this is where the magic happens!
 
 void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
+
     // use our lighting shader program
     _lightingShaderProgram->useProgram();
     glUniform1i(_lightingShaderUniformLocations.dirBool, 1);
@@ -340,7 +341,7 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
     glm::vec3 viewPos;
     if(selectedHero != -1){
         if ( camera == 1 ) viewPos = _arcCam->getPosition();
-        if ( camera == 3 ) viewPos = _fpCam->getPosition();
+        if ( camera == 2 ) viewPos = _fpCam->getPosition();
     }
     else{
 	    viewPos = _freeCam->getPosition();
@@ -356,10 +357,9 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
     //// END DRAWING MODELS ////
     _chunk->drawChunk(viewMtx, projMtx);
 
-
-
     // Skybox from previous assignment
     //***************************************************************************
+
     _textureShaderProgram->useProgram();
 
     glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.1f, 0.0f));
@@ -371,13 +371,14 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
     mvpMtx = projMtx * viewMtx * modelMatrix;
     _textureShaderProgram->setProgramUniform(_textureShaderUniformLocations.mvpMatrix, mvpMtx);
 
-    // TODO #21
+
     glBindTexture(GL_TEXTURE_2D, _texHandles[TEXTURE_ID::MINES]);
     // draw all the cool stuff!
     CSCI441::drawSolidSphere( 200.0f, 200.0f, 200.0f );
 
     CSCI441::setVertexAttributeLocations(_textureShaderAttributeLocations.vPos,
                                          _textureShaderAttributeLocations.vNormal, _textureShaderAttributeLocations.aTexCoord );
+
 
     //***************************************************************************
 
@@ -476,10 +477,45 @@ void Engine::_updateScene() {
             }
         }
         // fp camera
-        if ( povDisplayed ) {
+        if ( camera == 2 ) {
             // turn right
             switch (selectedHero) {
                 case 3: // steve
+
+                    if (_keys[GLFW_KEY_D]) {
+                        _steve->rotateHeadRight();
+                    }
+                    // turn head left
+                    if (_keys[GLFW_KEY_A]) {
+                        _steve->rotateHeadLeft();
+                    }
+                    // walk forward
+                    if (_keys[GLFW_KEY_W]) {
+                        _steve->walkForwards();
+                        _fpCam->moveForward(0.1);
+                        glm::vec3 pos = _steve->position;
+                        GLfloat head = _steve->headAngle;//get which dir the vehicle is faceing
+                        glm::vec3 point = _steve->fpPos;
+
+                        _fpCam->setPosition(pos + point);
+                        _fpCam->setHead(-head);
+                        _fpCam->recomputeOrientation();
+                    }
+                    // walk backward
+                    if (_keys[GLFW_KEY_S]) {
+                        _steve->walkBackwards();
+                        _fpCam->moveBackward(0.1);
+                        glm::vec3 pos = _steve->position;
+                        GLfloat head = _steve->headAngle;//get which dir the vehicle is faceing
+                        glm::vec3 point = _steve->fpPos;
+
+                        auto tmp = (glm::rotate(glm::mat4(1.0f),head,CSCI441::Y_AXIS) * glm::vec4(point, 1.0));
+                        point = glm::vec3(tmp[0],tmp[1],tmp[2]);
+                        _fpCam->setPosition(pos + point);
+                        _fpCam->setHead(-head);
+                        _fpCam->recomputeOrientation();
+                    }
+
 			 {
                         glm::vec3 pos = _steve->position;
                         GLfloat head = _steve->headAngle;//get which dir the vehicle is faceing
@@ -493,7 +529,7 @@ void Engine::_updateScene() {
                     }
 			break;
 
-                    break;
+                   // break;
 
                 default:
                     break;
@@ -533,23 +569,28 @@ void Engine::_updateScene() {
     }
     // switching POV
     // 1: Hero, 2: FreeCam, 3: toggle POV
+    // 1: Arcball Steve: 2: FP Steve 3: Freecam
     // Camera: Arcball
     if(_keys[GLFW_KEY_1]){ //Steve
 	    selectedHero = 3;
         camera = 1;
         _arcCam->setLookAtPoint(_steve->position);
 	    _arcCam->recomputeOrientation();
+        _currentCamera = _arcCam;
     }
     // Camera: FreeCam
-    if(_keys[GLFW_KEY_3]){
-	    selectedHero = -1;//no hero free roam
-        camera = 2;
-	povDisplayed = false;
-    }
     // Camera: First Person
     if(_keys[GLFW_KEY_2] and selectedHero != -1){
-        povDisplayed= !povDisplayed;
+        povDisplayed ^= true;
+        camera = 2;
+        _currentCamera = _fpCam;
 	_keys[GLFW_KEY_2] = false;//consume that input
+    }
+    if(_keys[GLFW_KEY_3]){
+        selectedHero = -1;//no hero free roam
+        camera = 3;
+        povDisplayed = false;
+        _currentCamera = _freeCam;
     }
 
 //    for (int i = 1; i <= 10; ++i){
@@ -617,13 +658,12 @@ void Engine::run() {
         // set up our look at matrix to position our camera
 
 	    glm::mat4 viewMatrix;
-        glm::mat4 viewMatrix2;
         if(selectedHero != -1){
             if ( camera == 1) {
                 viewMatrix = _arcCam->getViewMatrix();
             }
-            if ( povDisplayed) {
-                viewMatrix2 = _fpCam->getViewMatrix();
+            if ( camera == 2) {
+                viewMatrix = _fpCam->getViewMatrix();
             }
         }
 	    else {
@@ -632,15 +672,6 @@ void Engine::run() {
         // draw everything to the window
         _renderScene(viewMatrix, projectionMatrix);
 
-        if (povDisplayed) {
-            glScissor(430,250,200,200);
-	        glEnable(GL_SCISSOR_TEST);
-            glClearColor(0.0, 0.0, 0.0, 1.0);
-	        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	        glViewport(430.0f, 250.0f, 200.0f, 200.0f);
-	        glDisable(GL_SCISSOR_TEST);
-            _renderScene(viewMatrix2, projectionMatrix);
-        }
 
         _updateScene();
         glfwSwapBuffers(_window);                       // flush the OpenGL commands and make sure they get rendered!

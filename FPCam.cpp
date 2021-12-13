@@ -14,10 +14,16 @@ void FPCam::recomputeOrientation() {
 }
 
 void FPCam::moveForward(GLfloat movementFactor) {
+    double tmp = atan(_direction.x / _direction.z);
+    _position += glm::vec3(_position.x * cos(tmp) * movementFactor, 0.0,
+                           _position.y * sin(tmp)  * movementFactor);
 	recomputeOrientation();
 }
 
 void FPCam::moveBackward(GLfloat movementFactor) {
+    double tmp = atan(_direction.x / _direction.z);
+    _position -= glm::vec3(_position.x * cos(tmp) * movementFactor, 0.0,
+                           _position.y * sin(tmp) * movementFactor);
     recomputeOrientation();
 }
 void FPCam::turnHead(GLfloat dTheta, GLfloat dPhi) {

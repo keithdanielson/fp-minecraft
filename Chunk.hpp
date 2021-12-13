@@ -12,6 +12,7 @@
 #include <glm/glm.hpp>
 #include "Block.hpp"
 #include "TextureManager.hpp"
+#include <map>
 
 
 class Chunk {
@@ -37,6 +38,7 @@ private:
     GLuint _instanceMatrix;
 
     Block *_block = nullptr;
+
 
     glm::vec3 _chunkCenter;
     std::vector<block_attributes> _blockInformation;

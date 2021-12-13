@@ -8,130 +8,132 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"/>
+				<Option working_dir="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"/>
+				<Option working_dir="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"/>
+				<Option working_dir="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="mp">
-				<Option output="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/mp" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"/>
+				<Option output="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/mp" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/./include"/>
+					<Add directory="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/./include"/>
 					<Add directory="/home/cmmeyers/Dropbox/Graphics/include"/>
-					<Add directory="/usr/include/c++/9"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
-					<Add directory="/usr/include/c++/9/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 mp"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 mp"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="mp/fast">
-				<Option output="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/mp" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"/>
+				<Option output="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/mp" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/./include"/>
+					<Add directory="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/./include"/>
 					<Add directory="/home/cmmeyers/Dropbox/Graphics/include"/>
-					<Add directory="/usr/include/c++/9"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
-					<Add directory="/usr/include/c++/9/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 mp/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/home/keith/Coding/Computer\ Graphics/mcfinal2/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 mp/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/ArcCam.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/ArcCam.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/ArcCam.hpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/ArcCam.hpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Block.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Block.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Block.hpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Block.hpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Chunk.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Chunk.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Chunk.hpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Chunk.hpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Engine.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Engine.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Engine.hpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Engine.hpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/FPCam.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/FPCam.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/FPCam.hpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/FPCam.hpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Steve.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Steve.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/Steve.hpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/Steve.hpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/TextureManager.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/TextureManager.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/TextureManager.hpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/TextureManager.hpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/main.cpp">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/main.cpp">
 			<Option target="mp"/>
 		</Unit>
-		<Unit filename="/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/CMakeLists.txt">
+		<Unit filename="/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

@@ -14,6 +14,8 @@ out vec2 TexCoord;    // color to apply to this vertex
 
 
 void main() {
+    // vec4 position = mvpMatrix * vec4(vPos, 1.0);
+    // gl_position = position.xyww;
     gl_Position = mvpMatrix * vec4(vPos, 1.0);
 
     // TODO #C
