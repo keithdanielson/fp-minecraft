@@ -46,6 +46,21 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
+			"path" : "/snap/clion/175/bin/cmake/linux/share/cmake-3.21/Modules/CMakeFindCodeBlocks.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/175/bin/cmake/linux/share/cmake-3.21/Modules/CMakeExtraGeneratorDetermineCompilerMacrosAndIncludeDirs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/175/bin/cmake/linux/share/cmake-3.21/Modules/ProcessorCount.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
 			"path" : "/snap/clion/175/bin/cmake/linux/share/cmake-3.21/Modules/CMakeCInformation.cmake"
 		},
 		{
@@ -122,8 +137,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft",
-		"source" : "/home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft"
+		"build" : "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft",
+		"source" : "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"
 	},
 	"version" : 
 	{

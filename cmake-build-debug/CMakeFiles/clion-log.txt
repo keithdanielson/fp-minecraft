@@ -1,4 +1,4 @@
-/snap/clion/175/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft
+/snap/clion/175/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft
+-- Build files have been written to: /home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft

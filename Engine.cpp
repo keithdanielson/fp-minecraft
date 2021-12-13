@@ -127,6 +127,22 @@ void Engine::_setupShaders() {
 
     _spotlight.dir = _lightingShaderProgram->getUniformLocation("spotDir");
     _setupBlockShader();
+
+    _textureShaderProgram = new CSCI441::ShaderProgram("shaders/sb.v.glsl", "shaders/sb.f.glsl" );
+    // query uniform locations
+    _textureShaderUniformLocations.mvpMatrix      = _textureShaderProgram->getUniformLocation("mvpMatrix");
+    _textureShaderUniformLocations.ourTexture      = _textureShaderProgram->getUniformLocation("ourTexture");
+    // query attribute locations
+    _textureShaderAttributeLocations.vPos         = _textureShaderProgram->getAttributeLocation("vPos");
+    _textureShaderAttributeLocations.vNormal      = _textureShaderProgram->getAttributeLocation("vNormal");
+    _textureShaderAttributeLocations.aTexCoord      = _textureShaderProgram->getAttributeLocation("aTexCoord");
+
+    // set static uniforms
+    _textureShaderProgram->setProgramUniform(_texHandles[TEXTURE_ID::METAL], 0); // ????
+    CSCI441::setVertexAttributeLocations(_textureShaderAttributeLocations.vPos,
+                                         _textureShaderAttributeLocations.vNormal, _textureShaderAttributeLocations.aTexCoord );
+
+
 }
 
 void Engine::_setupBlockShader(){
@@ -176,6 +192,58 @@ void Engine::_setupBuffers() {
     _chunk->generateChunk(glm::vec3(0,0,0));
 
 }
+
+GLuint Engine::_loadAndRegisterTexture(const char* FILENAME) {
+    // our handle to the GPU
+    GLuint textureHandle = 0;
+
+    // enable setting to prevent image from being upside down
+    stbi_set_flip_vertically_on_load(true);
+
+    // will hold image parameters after load
+    GLint imageWidth, imageHeight, imageChannels;
+    // load image from file
+    GLubyte* data = stbi_load( FILENAME, &imageWidth, &imageHeight, &imageChannels, 0);
+
+    // if data was read from file
+    if( data ) {
+        const GLint STORAGE_TYPE = (imageChannels == 4 ? GL_RGBA : GL_RGB);
+
+        // TODO #01
+        glGenTextures(1, &textureHandle);
+        // TODO #02
+        glBindTexture(GL_TEXTURE_2D, textureHandle);
+        // TODO #03
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // TODO #04
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        // TODO #05
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        // TODO #06
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        // TODO #07
+        glTexImage2D(GL_TEXTURE_2D, 0, STORAGE_TYPE, imageWidth, imageHeight, 0, STORAGE_TYPE, GL_UNSIGNED_BYTE, data);
+
+        fprintf( stdout, "[INFO]: %s texture map read in with handle %d\n", FILENAME, textureHandle);
+
+        // release image memory from CPU - it now lives on the GPU
+        stbi_image_free(data);
+    } else {
+        // load failed
+        fprintf( stderr, "[ERROR]: Could not load texture map \"%s\"\n", FILENAME );
+    }
+
+    // return generated texture handle
+    return textureHandle;
+}
+
+void Engine::_setupTextures() {
+
+    _texHandles[TEXTURE_ID::MINES] = _loadAndRegisterTexture("sky.jpeg");
+
+}
+
 
 void Engine::_setupScene() {
     // arcball camera
@@ -237,7 +305,15 @@ void Engine::_setupScene() {
 void Engine::_cleanupShaders() {
     fprintf( stdout, "[INFO]: ...deleting Shaders.\n" );
     delete _lightingShaderProgram;
+    delete _textureShaderProgram;
 }
+
+void Engine::_cleanupTextures() {
+    fprintf( stdout, "[INFO]: ...deleting textures\n" );
+    glDeleteTextures(1, &_texHandles[TEXTURE_ID::METAL]);
+    glDeleteTextures(1, &_texHandles[TEXTURE_ID::MINES]);
+}
+
 
 void Engine::_cleanupBuffers() {
     fprintf( stdout, "[INFO]: ...deleting VAOs....\n" );
@@ -279,6 +355,31 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
     _steve->drawFullCharacter(modelMtxSteve, viewMtx, projMtx);
     //// END DRAWING MODELS ////
     _chunk->drawChunk(viewMtx, projMtx);
+
+
+
+    // Skybox from previous assignment
+    //***************************************************************************
+    _textureShaderProgram->useProgram();
+
+    glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -1.1f, 0.0f));
+    glm::mat4 mvpMtx = projMtx * viewMtx * modelMatrix;
+    _textureShaderProgram->setProgramUniform(_textureShaderUniformLocations.mvpMatrix, mvpMtx);
+
+    modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.1f, 0.0f));
+    //modelMatrix = glm::rotate( modelMatrix, _objectAngle, CSCI441::Y_AXIS );
+    mvpMtx = projMtx * viewMtx * modelMatrix;
+    _textureShaderProgram->setProgramUniform(_textureShaderUniformLocations.mvpMatrix, mvpMtx);
+
+    // TODO #21
+    glBindTexture(GL_TEXTURE_2D, _texHandles[TEXTURE_ID::MINES]);
+    // draw all the cool stuff!
+    CSCI441::drawSolidSphere( 200.0f, 200.0f, 200.0f );
+
+    CSCI441::setVertexAttributeLocations(_textureShaderAttributeLocations.vPos,
+                                         _textureShaderAttributeLocations.vNormal, _textureShaderAttributeLocations.aTexCoord );
+
+    //***************************************************************************
 
 }
 
@@ -596,7 +697,6 @@ void mouse_scroll_callback(GLFWwindow* window, double xOffset, double yOffset){
 
 void Engine::handleMouseScrollEvent(double xOffset, double yOffset) {
     // yOffset is -1 if scrolling towards user else 1
-    std::cout << "Scroll found" << "\n";
     yOffset == -1 ? _arcCam->moveBackward(_cameraSpeed.x) : _arcCam->moveForward(_cameraSpeed.x);
 }
 

@@ -6,7 +6,7 @@ set(SOURCE_FILES main.cpp Engine.cpp Engine.hpp
         Steve.hpp Steve.cpp
         Block.cpp Block.hpp
         Chunk.cpp Chunk.hpp
-        TextureManager.cpp TextureManager.hpp Skybox.cpp Skybox.hpp)
+        TextureManager.cpp TextureManager.hpp)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 # Windows with MinGW Installations

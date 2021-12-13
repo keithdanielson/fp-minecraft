@@ -57,10 +57,10 @@ RM = /snap/clion/175/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft
+CMAKE_SOURCE_DIR = "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft
+CMAKE_BINARY_DIR = "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/CMakeFiles /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/CMakeFiles" "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft//CMakeFiles/progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/keith/Coding/Computer Graphics/mcfinal2/fp-minecraft/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -249,30 +249,6 @@ FPCam.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mp.dir/build.make CMakeFiles/mp.dir/FPCam.cpp.s
 .PHONY : FPCam.cpp.s
 
-Skybox.o: Skybox.cpp.o
-.PHONY : Skybox.o
-
-# target to build an object file
-Skybox.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mp.dir/build.make CMakeFiles/mp.dir/Skybox.cpp.o
-.PHONY : Skybox.cpp.o
-
-Skybox.i: Skybox.cpp.i
-.PHONY : Skybox.i
-
-# target to preprocess a source file
-Skybox.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mp.dir/build.make CMakeFiles/mp.dir/Skybox.cpp.i
-.PHONY : Skybox.cpp.i
-
-Skybox.s: Skybox.cpp.s
-.PHONY : Skybox.s
-
-# target to generate assembly for a file
-Skybox.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mp.dir/build.make CMakeFiles/mp.dir/Skybox.cpp.s
-.PHONY : Skybox.cpp.s
-
 Steve.o: Steve.cpp.o
 .PHONY : Steve.o
 
@@ -369,9 +345,6 @@ help:
 	@echo "... FPCam.o"
 	@echo "... FPCam.i"
 	@echo "... FPCam.s"
-	@echo "... Skybox.o"
-	@echo "... Skybox.i"
-	@echo "... Skybox.s"
 	@echo "... Steve.o"
 	@echo "... Steve.i"
 	@echo "... Steve.s"

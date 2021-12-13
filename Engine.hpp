@@ -78,6 +78,51 @@ private:
 
     GLboolean povDisplayed = false;
 
+    /// \desc skybox texture stuff from previous assignment
+    // ***********************************************************************************
+    /// \desc shader program that performs lighting
+    CSCI441::ShaderProgram* _textureShaderProgram = nullptr;   // the wrapper for our shader program
+    /// \desc stores the locations of all of our shader uniforms
+    struct TextureShaderUniformLocations {
+        /// \desc precomputed MVP matrix location
+        GLint mvpMatrix;
+        // TODO #11
+        GLint ourTexture;
+
+    } _textureShaderUniformLocations;
+    /// \desc stores the locations of all of our shader attributes
+    struct TextureShaderAttributeLocations {
+        /// \desc vertex position location
+        GLint vPos;
+        /// \desc vertex normal location
+        /// \note not used in this lab
+        GLint vNormal;
+        // TODO #10
+        GLint aTexCoord;
+
+
+    } _textureShaderAttributeLocations;
+
+
+    /// \desc total number of textures in our scene
+    static constexpr GLuint NUM_TEXTURES = 2;
+    /// \desc used to index through our texture array to give named access
+    enum TEXTURE_ID {
+        /// \desc metal texture
+        METAL = 0,
+        /// \desc Mines logo texture
+        MINES = 1
+    };
+    /// \desc texture handles for our textures
+    GLuint _texHandles[NUM_TEXTURES];
+    static GLuint _loadAndRegisterTexture(const char* FILENAME);
+
+
+
+    // *************************************************************************************
+
+
+
     /// \desc last location of the mouse in window coordinates
     glm::vec2 _mousePosition;
     /// \desc current state of the left mouse button
@@ -218,6 +263,10 @@ private:
     void _computeAndSendMatrixUniforms(glm::mat4 modelMtx, glm::mat4 viewMtx, glm::mat4 projMtx) const;
 
     GLuint loadCubeMap(std::vector<std::string> faces);
+
+    void _setupTextures();
+
+    void _cleanupTextures();
 };
 /// \desc functions for user interactions
 void keyboard_callback(GLFWwindow *window, int key, int scancode, int action, int mods );

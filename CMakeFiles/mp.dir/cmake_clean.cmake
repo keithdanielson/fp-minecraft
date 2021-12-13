@@ -9,8 +9,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/mp.dir/Engine.cpp.o.d"
   "CMakeFiles/mp.dir/FPCam.cpp.o"
   "CMakeFiles/mp.dir/FPCam.cpp.o.d"
-  "CMakeFiles/mp.dir/Skybox.cpp.o"
-  "CMakeFiles/mp.dir/Skybox.cpp.o.d"
   "CMakeFiles/mp.dir/Steve.cpp.o"
   "CMakeFiles/mp.dir/Steve.cpp.o.d"
   "CMakeFiles/mp.dir/TextureManager.cpp.o"
