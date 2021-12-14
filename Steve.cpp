@@ -26,7 +26,8 @@ Steve::Steve(GLuint shaderProgramHandle, GLint mvpMtxUniformLocation, GLint norm
     armScale = glm::vec3(5.3f, 2.0f, 2.0f );
     leftArmTranslation = glm::vec3(0.034f, 0.14f, 0.0f );
     rightArmTranslation = glm::vec3(0.034f, -0.14f, 0.0f );
-    leftArmAngle = 0.0f;
+    //leftArmAngle = 0.0f;
+    leftArmAngle = M_PI / 4;
     armRotationSpeed = M_PI / 100.0f;
     // leg
     legColor = bodyColor;
@@ -71,7 +72,14 @@ void Steve::drawFullCharacter(glm::mat4 modelMtx, glm::mat4 viewMtx, glm::mat4 p
 void Steve::walkForwards() {
     moveBothLegs();
     moveBothArms();
+
+
 }
+
+void Steve::FPArm() {
+
+}
+
 void Steve::walkBackwards() {
     moveBothLegs();
     moveBothArms();

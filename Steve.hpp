@@ -17,11 +17,13 @@ public:
     glm::vec3 position = glm::vec3(-2,0,-2);
     GLfloat headAngle = 0.0f;
     GLfloat heading = 0.0f;
-    glm::vec3 fpPos = glm::vec3(0.5f, 2.5f, 0.5f);
+    glm::vec3 fpPos = glm::vec3(sin(headAngle), 1.0f, cos(headAngle));
 
     void changeRun(bool run);
 
+    bool inFirstPerson = false;
 private:
+    void FPArm();
     GLfloat _headRot = 0.05;//rotation speed of heading
     bool isRunning = false;
     glm::vec3 skinColor;

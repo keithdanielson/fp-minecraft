@@ -78,6 +78,8 @@ void Engine::handleCursorPositionEvent(glm::vec2 currMousePosition) {
                          (_mousePosition.y - currMousePosition.y) * 0.005f );
         _freeCam->rotate((currMousePosition.x - _mousePosition.x) * 0.005f,
                         (_mousePosition.y - currMousePosition.y) * 0.005f );
+        _fpCam->rotate((0.0f),
+                         (currMousePosition.y - _mousePosition.y) * 0.005f );
     }
     _mousePosition = currMousePosition;
 }
@@ -510,28 +512,87 @@ void Engine::_updateScene() {
                     // walk forward
                     if (_keys[GLFW_KEY_W]) {
                         _steve->walkForwards();
-                        _fpCam->moveForward(0.1);
                         glm::vec3 pos = _steve->position;
                         GLfloat head = _steve->headAngle;//get which dir the vehicle is faceing
-                        glm::vec3 point = _steve->fpPos;
 
-                        _fpCam->setPosition(pos + point);
-                        _fpCam->setHead(-head);
+                        pos[0] += sin(head) * _cameraSpeed.x * characterSpeed;
+                        pos[2] += cos(head) * _cameraSpeed.x * characterSpeed;
+                        std::cout << _steve->position.y;
+                        if (nearestYBelowCharacter > pos[1]) {
+                            pos[0] -= sin(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            pos[2] -= cos(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            _steve->position = pos;
+                        } else {
+                            _steve->position = pos;
+                        }
+
+
+                        _fpCam->setLookAtPoint(_steve->position);
                         _fpCam->recomputeOrientation();
                     }
                     // walk backward
                     if (_keys[GLFW_KEY_S]) {
                         _steve->walkBackwards();
-                        _fpCam->moveBackward(0.1);
                         glm::vec3 pos = _steve->position;
                         GLfloat head = _steve->headAngle;//get which dir the vehicle is faceing
-                        glm::vec3 point = _steve->fpPos;
 
-                        auto tmp = (glm::rotate(glm::mat4(1.0f),head,CSCI441::Y_AXIS) * glm::vec4(point, 1.0));
-                        point = glm::vec3(tmp[0],tmp[1],tmp[2]);
-                        _fpCam->setPosition(pos + point);
-                        _fpCam->setHead(-head);
+                        pos[0] -= sin(head) * _cameraSpeed.x * characterSpeed;
+                        pos[2] -= cos(head) * _cameraSpeed.x * characterSpeed;
+                        if (nearestYBelowCharacter > pos[1]) {
+                            pos[0] += sin(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            pos[2] += cos(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            _steve->position = pos;
+                        } else {
+                            _steve->position = pos;
+                        }
+                        //auto tmp = (glm::rotate(glm::mat4(1.0f),head,CSCI441::Y_AXIS) * glm::vec4(point, 1.0));
+                        //point = glm::vec3(tmp[0],tmp[1] - 2.0f,tmp[2] + 1.0f);
+                        //_fpCam->setPosition(pos + point);
+                        //_fpCam->setHead(-head);
+                        //_fpCam->recomputeOrientation();
+
+
+                        //_fpCam->setLookAtPoint(_steve->position);
+                        //_fpCam->recomputeOrientation();
+                    }
+                    if (_keys[GLFW_KEY_SPACE]) {
+                        characterIsJumping = true;
+                        if (currentJumpTravel >= maxJumpHeight) {
+                            jumpFalling = true;
+                        }
+
+                    }
+                    //Toggle if character is running or not
+                    if (_keys[GLFW_KEY_LEFT_SHIFT]) {
+                        characterIsRunning = true;
+                    } else {
+                        characterIsRunning = false;
+                    }
+                    //break;
+                    //
+                    if (_keys[GLFW_KEY_G]){
                         _fpCam->recomputeOrientation();
+                        for (float i = .1; i <= 4; i = i + 0.01f){
+                            GLfloat x = GLfloat(i);
+                            glm::vec3 direction = x * _fpCam->getDirectionVec()  + _fpCam->getPosition();
+                            if (_chunk->deleteBlock(int(direction.x), int(direction.y), int(direction.z))){
+                                _keys[GLFW_KEY_G] = false;
+                                break;
+                            }
+                        }
+                    }
+                    else if (_keys[GLFW_KEY_T]){
+                        glm::vec3 prev_direction = 0.05f * _fpCam->getDirectionVec()  + _fpCam->getPosition();
+                        printf("\n\n\n");
+                        for (float i = .1; i <= 4; i = i + 0.01f){
+                            GLfloat x = GLfloat(i);
+                            glm::vec3 direction = x * _fpCam->getDirectionVec()  + _fpCam->getPosition();
+                            if (_chunk->findBlock(int(direction.x), int(direction.y), int(direction.z))){
+                                _chunk->addBlock((int)prev_direction.x, (int)prev_direction.y, (int)prev_direction.z);
+                                break;
+                            }
+                            prev_direction = direction;
+                        }
                     }
 
 			 {
@@ -545,6 +606,8 @@ void Engine::_updateScene() {
                         _fpCam->setHead(-head);
                         _fpCam->recomputeOrientation();
                     }
+
+
 			break;
 
                    // break;
@@ -595,6 +658,7 @@ void Engine::_updateScene() {
         _arcCam->setLookAtPoint(_steve->position);
 	    _arcCam->recomputeOrientation();
         _currentCamera = _arcCam;
+        _steve->inFirstPerson = false;
     }
     // Camera: FreeCam
     // Camera: First Person
@@ -602,6 +666,7 @@ void Engine::_updateScene() {
         povDisplayed ^= true;
         camera = 2;
         _currentCamera = _fpCam;
+        _steve->inFirstPerson = true;
 	_keys[GLFW_KEY_2] = false;//consume that input
     }
     if(_keys[GLFW_KEY_3]){
@@ -609,6 +674,7 @@ void Engine::_updateScene() {
         camera = 3;
         povDisplayed = false;
         _currentCamera = _freeCam;
+        _steve->inFirstPerson = false;
     }
 
 //    for (int i = 1; i <= 10; ++i){
