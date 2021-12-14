@@ -11,7 +11,7 @@
 
 Steve::Steve(GLuint shaderProgramHandle, GLint mvpMtxUniformLocation, GLint normalMtxUniformLocation, GLint materialColorUniformLocation, GLint mMtxUniformLocation ) {
     // world position placement
-    position = glm::vec3(0, 8.0f, 0);
+    position = glm::vec3(0, 9.0f, 0);
 
     // color
     skinColor = glm::vec3(169.0f / 255.0f, 125.0f / 255.0f, 100.0f / 255.0f);
@@ -40,7 +40,7 @@ Steve::Steve(GLuint shaderProgramHandle, GLint mvpMtxUniformLocation, GLint norm
     headScale = glm::vec3(3.28f, 3.28f, 3.28f );
     headTranslation = glm::vec3(0.6f, 0.0f, 0.0f );
     headAngle = 0.0f;
-    headRotationSpeed = 0.01f;
+    headRotationSpeed = 0.1f;
     // eyes
     eyeScale = glm::vec3(1.1f, 1.1f, 0.1f );
     leftEyeTranslation = glm::vec3(0.5f, 0.10f, 1.7f );

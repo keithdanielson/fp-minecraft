@@ -385,6 +385,8 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
 }
 
 void Engine::_updateScene() {
+    nearestYBelowCharacter = _chunk->getHeightMap()[std::make_pair(int(_steve->position.x + 0.5), int(_steve->position.z + 0.5))] + 1.5;
+
     //Running
     if (characterIsRunning) {
         characterSpeed = SPRINT_SPEED;
@@ -395,7 +397,11 @@ void Engine::_updateScene() {
     }
     //Gravity
     if (_steve->position[1] > nearestYBelowCharacter && !characterIsJumping) {
-        _steve->position = glm::vec3(_steve->position[0], _steve->position[1] - 0.5, _steve-> position[2]);
+        if (_steve->position[1] - 0.5 < nearestYBelowCharacter) {
+            _steve->position = glm::vec3(_steve->position[0], nearestYBelowCharacter, _steve-> position[2]);
+        } else {
+            _steve->position = glm::vec3(_steve->position[0], _steve->position[1] - 0.5, _steve-> position[2]);
+        }
         _arcCam->setLookAtPoint(_steve->position);
         _arcCam->recomputeOrientation();
     }
@@ -430,15 +436,23 @@ void Engine::_updateScene() {
                     }
                     // walk forward
                     if (_keys[GLFW_KEY_W]) {
+
                         _steve->walkForwards();
                         glm::vec3 pos = _steve->position;
                         GLfloat head = _steve->headAngle;//get which dir the vehicle is faceing
 
                         pos[0] += sin(head) * _cameraSpeed.x * characterSpeed;
                         pos[2] += cos(head) * _cameraSpeed.x * characterSpeed;
-                        if (fabs(pos[0]) >= WORLD_SIZE or fabs(pos[2]) >= WORLD_SIZE)
-                            return;
-                        _steve->position = pos;
+                        std::cout << _steve->position.y;
+                        if (nearestYBelowCharacter > pos[1]) {
+                            pos[0] -= sin(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            pos[2] -= cos(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            _steve->position = pos;
+                        } else {
+                            _steve->position = pos;
+                        }
+
+
                         _arcCam->setLookAtPoint(_steve->position);
                         _arcCam->recomputeOrientation();
                     }
@@ -450,9 +464,13 @@ void Engine::_updateScene() {
 
                         pos[0] -= sin(head) * _cameraSpeed.x * characterSpeed;
                         pos[2] -= cos(head) * _cameraSpeed.x * characterSpeed;
-                        if (fabs(pos[0]) >= WORLD_SIZE or fabs(pos[2]) >= WORLD_SIZE)
-                            return;
-                        _steve->position = pos;
+                        if (nearestYBelowCharacter > pos[1]) {
+                            pos[0] += sin(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            pos[2] += cos(head) * _cameraSpeed.x * (characterSpeed * 2.5);
+                            _steve->position = pos;
+                        } else {
+                            _steve->position = pos;
+                        }
                         _arcCam->setLookAtPoint(_steve->position);
                         _arcCam->recomputeOrientation();
                     }

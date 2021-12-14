@@ -64,6 +64,8 @@ void Chunk::_regenerateChunk() {
         blockModelMatrices.emplace_back(glm::translate(chunkCenterModel, glm::vec3(block_attr.x, block_attr.y, block_attr.z)));
     }
     _transferChunkToGPU(blockModelMatrices);
+
+    generateHeightMap();
 }
 
 
@@ -87,6 +89,7 @@ void Chunk::generateChunk(glm::vec3 center) {
     }
 
     _transferChunkToGPU(blockModelMatrices);
+    generateHeightMap();
 }
 
 void Chunk::_transferChunkToGPU(std::vector<glm::mat4> blocks) {
@@ -120,6 +123,15 @@ void Chunk::drawChunk(glm::mat4 viewMtx, glm::mat4 projMtx) {
     int amount = CHUNK_WIDTH;
     _block->drawBlock(_blockInformation.size(), viewMtx, projMtx);
     glBindVertexArray(0);
+}
+
+void Chunk::generateHeightMap() {
+    for (int i = 0; i < _blockInformation.size(); i++) {
+        chunkHeightMap[std::make_pair(_blockInformation[i].x, _blockInformation[i].z)] = _blockInformation[i].y;
+    }
+}
+std::map<std::pair<int, int>, int> Chunk::getHeightMap() {
+    return chunkHeightMap;
 }
 
 

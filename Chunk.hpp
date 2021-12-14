@@ -12,7 +12,6 @@
 #include <glm/glm.hpp>
 #include "Block.hpp"
 #include "TextureManager.hpp"
-#include <map>
 
 
 class Chunk {
@@ -29,16 +28,20 @@ public:
     void setGenerationMode();
 
 
+    std::map<std::pair<int, int>, int>  getHeightMap();
+
 private:
     struct block_attributes {
         int x,y,z;
     };
 
+    std::map<std::pair<int, int>, int> chunkHeightMap;
+    void generateHeightMap();
+
     glm::mat4* modelMatrices;
     GLuint _instanceMatrix;
 
     Block *_block = nullptr;
-
 
     glm::vec3 _chunkCenter;
     std::vector<block_attributes> _blockInformation;
