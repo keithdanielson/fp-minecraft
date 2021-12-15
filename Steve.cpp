@@ -11,7 +11,7 @@
 
 Steve::Steve(GLuint shaderProgramHandle, GLint mvpMtxUniformLocation, GLint normalMtxUniformLocation, GLint materialColorUniformLocation, GLint mMtxUniformLocation ) {
     // world position placement
-    position = glm::vec3(0, 9.0f, 0);
+    position = glm::vec3(0, 8.5f, 0);
 
     // color
     skinColor = glm::vec3(169.0f / 255.0f, 125.0f / 255.0f, 100.0f / 255.0f);

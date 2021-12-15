@@ -49,7 +49,7 @@ private:
 
     void _transferChunkToGPU(std::vector<glm::mat4> blocks);
     void _regenerateChunk();
-    static const int CHUNK_WIDTH = 128;
+    static const int CHUNK_WIDTH = 64;
     static const int CHUNK_HEIGHT = 8;
     static const int BLOCK_SPACING = 1;
 };

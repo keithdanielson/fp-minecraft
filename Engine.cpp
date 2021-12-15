@@ -41,6 +41,33 @@ void Engine::handleKeyEvent(GLint key, GLint action) {
         _keys[key] = ((action == GLFW_PRESS) || (action == GLFW_REPEAT));
     }
 
+    if (action != GLFW_REPEAT){
+        if (_keys[GLFW_KEY_G]){
+            _currentCamera->recomputeOrientation();
+            for (float i = .1; i <= 4; i = i + 0.01f){
+                GLfloat x = GLfloat(i);
+                glm::vec3 direction = x * _currentCamera->getDirectionVec()  + _currentCamera->getPosition();
+                if (_chunk->deleteBlock(int(direction.x), int(direction.y), int(direction.z))){
+                    _keys[GLFW_KEY_G] = false;
+                    break;
+                }
+            }
+        }
+        else if (_keys[GLFW_KEY_T]){
+            glm::vec3 prev_direction = 0.05f * _currentCamera->getDirectionVec()  + _currentCamera->getPosition();
+            printf("\n\n\n");
+            for (float i = .1; i <= 4; i = i + 0.01f){
+                GLfloat x = GLfloat(i);
+                glm::vec3 direction = x * _currentCamera->getDirectionVec()  + _currentCamera->getPosition();
+                if (_chunk->findBlock(int(direction.x), int(direction.y), int(direction.z))){
+                    _chunk->addBlock((int)prev_direction.x, (int)prev_direction.y, (int)prev_direction.z);
+                    break;
+                }
+                prev_direction = direction;
+            }
+        }
+    }
+
     }
     if(action == GLFW_PRESS) {
         switch( key ) {
@@ -632,30 +659,7 @@ void Engine::_updateScene() {
                     }
                     //break;
                     //
-                    if (_keys[GLFW_KEY_G]){
-                        _fpCam->recomputeOrientation();
-                        for (float i = .1; i <= 4; i = i + 0.01f){
-                            GLfloat x = GLfloat(i);
-                            glm::vec3 direction = x * _fpCam->getDirectionVec()  + _fpCam->getPosition();
-                            if (_chunk->deleteBlock(int(direction.x), int(direction.y), int(direction.z))){
-                                _keys[GLFW_KEY_G] = false;
-                                break;
-                            }
-                        }
-                    }
-                    else if (_keys[GLFW_KEY_T]){
-                        glm::vec3 prev_direction = 0.05f * _fpCam->getDirectionVec()  + _fpCam->getPosition();
-                        printf("\n\n\n");
-                        for (float i = .1; i <= 4; i = i + 0.01f){
-                            GLfloat x = GLfloat(i);
-                            glm::vec3 direction = x * _fpCam->getDirectionVec()  + _fpCam->getPosition();
-                            if (_chunk->findBlock(int(direction.x), int(direction.y), int(direction.z))){
-                                _chunk->addBlock((int)prev_direction.x, (int)prev_direction.y, (int)prev_direction.z);
-                                break;
-                            }
-                            prev_direction = direction;
-                        }
-                    }
+
 
 			 {
                         glm::vec3 pos = _steve->position;
@@ -688,29 +692,6 @@ void Engine::_updateScene() {
         else if (_keys[GLFW_KEY_S]) {
             _freeCam->moveBackward(_cameraSpeed.x*5);
             _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _freeCam->getPosition());
-        }else if (_keys[GLFW_KEY_G]){
-            _freeCam->recomputeOrientation();
-            for (float i = .1; i <= 4; i = i + 0.01f){
-                GLfloat x = GLfloat(i);
-                glm::vec3 direction = x * _freeCam->getDirectionVec()  + _freeCam->getPosition();
-                if (_chunk->deleteBlock(int(direction.x), int(direction.y), int(direction.z))){
-                    _keys[GLFW_KEY_G] = false;
-                    break;
-                }
-            }
-        }
-        else if (_keys[GLFW_KEY_T]){
-            glm::vec3 prev_direction = 0.05f * _freeCam->getDirectionVec()  + _freeCam->getPosition();
-            printf("\n\n\n");
-            for (float i = .1; i <= 4; i = i + 0.01f){
-                GLfloat x = GLfloat(i);
-                glm::vec3 direction = x * _freeCam->getDirectionVec()  + _freeCam->getPosition();
-                if (_chunk->findBlock(int(direction.x), int(direction.y), int(direction.z))){
-                    _chunk->addBlock((int)prev_direction.x, (int)prev_direction.y, (int)prev_direction.z);
-                    break;
-                }
-                prev_direction = direction;
-            }
         }
     }
     // switching POV
