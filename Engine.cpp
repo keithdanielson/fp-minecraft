@@ -208,7 +208,7 @@ void Engine::_setupBuffers() {
                            _blockShaderAttributeLocations.vPos,
                            _blockShaderAttributeLocations.vertexNormal,
                            _blockShaderAttributeLocations.texCoord);
-    stoneBlock->setTexture("dirt", _textureManager->getTextureHandle("dirt"));
+    stoneBlock->setTexture("stone", _textureManager->getTextureHandle("stone"));
 
     // Chunks
     _chunk = new Chunk(stoneBlock);
@@ -290,15 +290,15 @@ void Engine::_setupScene() {
     _fpCam->setTheta( -M_PI / 3.0f );
     _fpCam->recomputeOrientation();
     
-    glm::vec3 pos = glm::vec3(-WORLD_SIZE/2,10,-WORLD_SIZE/2);
-    glm::vec3 col = glm::vec3(0,1,0);
+    glm::vec3 pos = glm::vec3(1.0f, 10.0f, 1.0f); // FINDME
+    glm::vec3 col = glm::vec3(1.0,1.0,0.75);
     glProgramUniform3fv(_lightingShaderProgram->getShaderProgramHandle(),
                         _pointLight.pos,
                         1,&pos[0]);
     glProgramUniform3fv(_lightingShaderProgram->getShaderProgramHandle(),
                         _pointLight.col,
                         1,&col[0]);
-    glm::vec3 pcol = glm::vec3(1, 0, 0);
+    glm::vec3 pcol = glm::vec3(1, 0.8f, 0.8f);
     glm::vec3 pdir = glm::vec3(0,-1.0f,0);
     glm::vec3 ppos = glm::vec3(WORLD_SIZE/2,10, WORLD_SIZE/2);
     //_spotlight.pos = glm::vec3(1.0f, 10.0f, 1.0f);
@@ -441,6 +441,10 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
 void Engine::_updateScene() {
     nearestYBelowCharacter = _chunk->getHeightMap()[std::make_pair(int(_steve->position.x + 0.5), int(_steve->position.z + 0.5))] + 1.5;
 
+     lightAnimation += 0.0005;
+     _lightPos = glm::vec3( cos(lightAnimation)*100, 5, sin(lightAnimation)*100);
+     _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.lightPos, _lightPos);
+     //_lightingShaderProgram->setProgramUniform(_lightingShaderUniformLocations.)
     // Moving the light
     //Running
     if (characterIsRunning) {

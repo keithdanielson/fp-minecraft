@@ -18,11 +18,8 @@ void main() {
     // pass the interpolated color through as output
     vec4 texColor = texture(textureMap, textureCordinate);
 
-    if( !gl_FrontFacing ) {
-        fragColorOut= vec4(materialAmbColor, 1.0);
-    }else{
-        fragColorOut = texColor + color + vec4(materialAmbColor, 1.0);
-    }
+    vec3 scaledLight = 0.05 * lightColor;
+    fragColorOut = texColor + color + vec4(materialAmbColor, 1.0) + vec4(scaledLight, 1.0);
 
     //fragColorOut = vec4( texColor * lightColor * materialAmbColor, 1.0f );
     //fragColorOut = texture(textureMap, textureCordinate);

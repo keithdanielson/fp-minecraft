@@ -46,6 +46,8 @@ public:
     bool isJumping = false;
     float jumpHeight = 0.0;
 
+    float lightAnimation = 0.0;
+
     void handleMouseScrollEvent(double xOffset, double yOffset);
 private:
     /// \desc set up functions
