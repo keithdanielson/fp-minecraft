@@ -44,6 +44,8 @@ vec3 diffuseColor(vec3 vertexPosition, vec3 vertexNormal) {
         lightVector = normalize(lightPos - vertexPosition);
     }
 
+    lightVector = normalize(lightPos - vertexPosition);
+
     vec3 diffColor = lightColor * materialDiffColor * max( dot(vertexNormal, lightVector), 0.0 );
 
     // spotlight - check if within cone

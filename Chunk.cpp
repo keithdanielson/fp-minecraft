@@ -131,13 +131,14 @@ void Chunk::_transferChunkToGPU(std::vector<glm::mat4> blocks) {
     glBufferData(GL_ARRAY_BUFFER, normalMtx.size() * sizeof(glm::mat3), &normalMtx[0], GL_STATIC_DRAW);
 
     glBindVertexArray(_block->getBlockVAO());
+    std::size_t vec3Size = sizeof(glm::vec3);
     // vertex attributes
     glEnableVertexAttribArray(7);
-    glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+    glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, 3 * vec3Size, (void*)0);
     glEnableVertexAttribArray(8);
-    glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
+    glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, 3 * vec3Size, (void*)(1 * vec3Size));
     glEnableVertexAttribArray(9);
-    glVertexAttribPointer(9, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
+    glVertexAttribPointer(9, 4, GL_FLOAT, GL_FALSE, 3 * vec3Size, (void*)(2 * vec3Size));
     glVertexAttribDivisor(7, 1);
     glVertexAttribDivisor(8, 1);
     glVertexAttribDivisor(9, 1);

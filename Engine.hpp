@@ -265,6 +265,8 @@ private:
         GLint materialShininess;
         /// \desc material ambient color location
         GLint materialAmbColor;
+        GLint diffuseMap;
+        /// \desc color tin location
 
     }_blockShaderUniformLocations;
 

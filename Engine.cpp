@@ -174,11 +174,13 @@ void Engine::_setupBlockShader(){
     _blockShaderUniformLocations.materialSpecColor   = _blockShaderProgram->getUniformLocation("materialSpecColor");
     _blockShaderUniformLocations.materialShininess   = _blockShaderProgram->getUniformLocation("materialShininess");
     _blockShaderUniformLocations.materialAmbColor    = _blockShaderProgram->getUniformLocation("materialAmbColor");
+    _blockShaderUniformLocations.diffuseMap   = _blockShaderProgram->getUniformLocation("diffuseMap");
     // get attribute locations
     _blockShaderAttributeLocations.vPos              = _blockShaderProgram->getAttributeLocation("vPos");
     _blockShaderAttributeLocations.vertexNormal           = _blockShaderProgram->getAttributeLocation("vertexNormal");
 
-
+    // set static uniforms
+    _blockShaderProgram->setProgramUniform( _blockShaderUniformLocations.diffuseMap, 0 );
     CSCI441::setVertexAttributeLocations(_blockShaderAttributeLocations.vPos, _blockShaderAttributeLocations.vertexNormal, _blockShaderAttributeLocations.texCoord);
 }
 
@@ -299,6 +301,7 @@ void Engine::_setupScene() {
     glm::vec3 pcol = glm::vec3(1, 0, 0);
     glm::vec3 pdir = glm::vec3(0,-1.0f,0);
     glm::vec3 ppos = glm::vec3(WORLD_SIZE/2,10, WORLD_SIZE/2);
+    //_spotlight.pos = glm::vec3(1.0f, 10.0f, 1.0f);
     glProgramUniform3fv(_lightingShaderProgram->getShaderProgramHandle(),
                         _spotlight.pos,
                         1,&ppos[0]);
@@ -319,7 +322,7 @@ void Engine::_setupScene() {
 			1,&lCol[0]);
 
 
-    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+    glm::vec3 lightColor(1.0f, 1.0f, 0.75f);
     _lightPos = glm::vec3(1.0f, 10.0f, 1.0f);
     _lightDir = glm::vec3(-1.0f, -5.0f, -1.0f);
     _lightAngle = glm::radians(27.5f);
@@ -404,7 +407,8 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
     glm::mat4 modelMtxSteve = glm::translate(modelMtx, _steve->position);
     _steve->drawFullCharacter(modelMtxSteve, viewMtx, projMtx);
     //// END DRAWING MODELS ////
-    _setMaterialProperties(CSCI441::Materials::RUBY);
+    _setMaterialProperties(CSCI441::Materials::OBSIDIAN);
+
     _chunk->drawChunk(viewMtx, projMtx);
 
     // Skybox from previous assignment
@@ -437,6 +441,7 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
 void Engine::_updateScene() {
     nearestYBelowCharacter = _chunk->getHeightMap()[std::make_pair(int(_steve->position.x + 0.5), int(_steve->position.z + 0.5))] + 1.5;
 
+    // Moving the light
     //Running
     if (characterIsRunning) {
         characterSpeed = SPRINT_SPEED;
