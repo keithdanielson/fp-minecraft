@@ -1485,6 +1485,7 @@ CMakeFiles/mp.dir/Engine.cpp.o: Engine.cpp \
   ArcCam.hpp \
   include/CSCI441/Camera.hpp \
   FPCam.hpp \
+  /home/cmmeyers/Dropbox/Graphics/include/CSCI441/materials.hpp \
   /usr/include/c++/7/ctime
 
 CMakeFiles/mp.dir/FPCam.cpp.o: FPCam.cpp \
@@ -2772,6 +2773,7 @@ CMakeFiles/mp.dir/main.cpp.o: main.cpp \
   ArcCam.hpp \
   include/CSCI441/Camera.hpp \
   FPCam.hpp \
+  /home/cmmeyers/Dropbox/Graphics/include/CSCI441/materials.hpp \
   /usr/include/c++/7/ctime \
   /usr/lib/gcc/x86_64-linux-gnu/7/include/emmintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/7/include/xmmintrin.h \
@@ -2850,6 +2852,8 @@ TextureManager.hpp:
 /home/cmmeyers/Dropbox/Graphics/include/glm/ext/vector_double4_precision.hpp:
 
 /home/cmmeyers/Dropbox/Graphics/include/glm/ext/vector_double4.hpp:
+
+/home/cmmeyers/Dropbox/Graphics/include/CSCI441/materials.hpp:
 
 /home/cmmeyers/Dropbox/Graphics/include/glm/ext/vector_float4_precision.hpp:
 

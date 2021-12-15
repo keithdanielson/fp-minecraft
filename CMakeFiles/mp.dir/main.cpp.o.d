@@ -360,6 +360,7 @@ CMakeFiles/mp.dir/main.cpp.o: \
  /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/ArcCam.hpp \
  /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/./include/CSCI441/Camera.hpp \
  /home/cmmeyers/Dropbox/Graphics/FP/fp-minecraft/FPCam.hpp \
+ /home/cmmeyers/Dropbox/Graphics/include/CSCI441/materials.hpp \
  /usr/include/c++/7/ctime \
  /usr/lib/gcc/x86_64-linux-gnu/7/include/emmintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/7/include/xmmintrin.h \

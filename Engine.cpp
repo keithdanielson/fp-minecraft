@@ -28,6 +28,8 @@ Engine::Engine(int OPENGL_MAJOR_VERSION, int OPENGL_MINOR_VERSION,
 Engine::~Engine() {
     delete _arcCam;
     delete _freeCam;
+    delete _fpCam;
+    delete _chunk;
 }
 
 void Engine::handleKeyEvent(GLint key, GLint action) {
@@ -161,7 +163,23 @@ void Engine::_setupBlockShader(){
     _blockShaderUniformLocations.view = _blockShaderProgram->getUniformLocation("view");
     _blockShaderUniformLocations.textureMap = _blockShaderProgram->getUniformLocation("textureMap");
 
+    _blockShaderUniformLocations.normalMatrix              = _blockShaderProgram->getUniformLocation("normalMatrix");
+    _blockShaderUniformLocations.eyePos              = _blockShaderProgram->getUniformLocation("eyePos");
+    _blockShaderUniformLocations.lightPos            = _blockShaderProgram->getUniformLocation("lightPos");
+    _blockShaderUniformLocations.lightDir            = _blockShaderProgram->getUniformLocation("lightDir");
+    _blockShaderUniformLocations.lightCutoff         = _blockShaderProgram->getUniformLocation("lightCutoff");
+    _blockShaderUniformLocations.lightColor          = _blockShaderProgram->getUniformLocation("lightColor");
+    _blockShaderUniformLocations.lightType           = _blockShaderProgram->getUniformLocation("lightType");
+    _blockShaderUniformLocations.materialDiffColor   = _blockShaderProgram->getUniformLocation("materialDiffColor");
+    _blockShaderUniformLocations.materialSpecColor   = _blockShaderProgram->getUniformLocation("materialSpecColor");
+    _blockShaderUniformLocations.materialShininess   = _blockShaderProgram->getUniformLocation("materialShininess");
+    _blockShaderUniformLocations.materialAmbColor    = _blockShaderProgram->getUniformLocation("materialAmbColor");
+    // get attribute locations
+    _blockShaderAttributeLocations.vPos              = _blockShaderProgram->getAttributeLocation("vPos");
+    _blockShaderAttributeLocations.vertexNormal           = _blockShaderProgram->getAttributeLocation("vertexNormal");
 
+
+    CSCI441::setVertexAttributeLocations(_blockShaderAttributeLocations.vPos, _blockShaderAttributeLocations.vertexNormal, _blockShaderAttributeLocations.texCoord);
 }
 
 void Engine::_setupBuffers() {
@@ -256,6 +274,8 @@ void Engine::_setupScene() {
     selectedHero = 3;
     _arcCam->setLookAtPoint(_steve->position);
     _arcCam->recomputeOrientation();
+    _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _arcCam->getPosition());
+
     _cameraSpeed = glm::vec2(0.05f, 0.02f);
     // free camera
     _freeCam = new CSCI441::FreeCam();//setup Free cam, is this a problem?
@@ -263,7 +283,6 @@ void Engine::_setupScene() {
     _freeCam->setTheta( -M_PI / 3.0f );
     _freeCam->setPhi( M_PI / 2.8f );
     _freeCam->recomputeOrientation();
-    // TODO finish implementing the first person camera
     // first person camera
     _fpCam = new FPCam();
     _fpCam->setTheta( -M_PI / 3.0f );
@@ -298,6 +317,34 @@ void Engine::_setupScene() {
 	glProgramUniform3fv(_lightingShaderProgram->getShaderProgramHandle(),
 			_lightingShaderUniformLocations.lCol,
 			1,&lCol[0]);
+
+
+    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+    _lightPos = glm::vec3(1.0f, 10.0f, 1.0f);
+    _lightDir = glm::vec3(-1.0f, -5.0f, -1.0f);
+    _lightAngle = glm::radians(27.5f);
+    float lightCutoff = glm::cos(_lightAngle);
+    _lightType = 0;// set up light info
+
+
+    _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.lightColor, lightColor);
+    _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.lightPos, _lightPos);
+    _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.lightDir, _lightDir);
+    _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.lightCutoff, lightCutoff);
+    _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.lightType, _lightType);
+
+
+
+}
+
+
+void Engine::_setMaterialProperties(CSCI441::Materials::Material material) const {
+    // ensure our shader program is not null
+        // set the D, S, A, & shininess components of the material to our Gouraud Shader
+        glProgramUniform3fv( _blockShaderProgram->getShaderProgramHandle(), _blockShaderUniformLocations.materialDiffColor, 1, material.diffuse   );
+        glProgramUniform3fv( _blockShaderProgram->getShaderProgramHandle(), _blockShaderUniformLocations.materialSpecColor, 1, material.specular  );
+        glProgramUniform1f(  _blockShaderProgram->getShaderProgramHandle(), _blockShaderUniformLocations.materialShininess,    material.shininess );
+        glProgramUniform3fv( _blockShaderProgram->getShaderProgramHandle(), _blockShaderUniformLocations.materialAmbColor,  1, material.ambient   );
 }
 
 //*************************************************************************************
@@ -357,6 +404,7 @@ void Engine::_renderScene(glm::mat4 viewMtx, glm::mat4 projMtx) {
     glm::mat4 modelMtxSteve = glm::translate(modelMtx, _steve->position);
     _steve->drawFullCharacter(modelMtxSteve, viewMtx, projMtx);
     //// END DRAWING MODELS ////
+    _setMaterialProperties(CSCI441::Materials::RUBY);
     _chunk->drawChunk(viewMtx, projMtx);
 
     // Skybox from previous assignment
@@ -406,6 +454,7 @@ void Engine::_updateScene() {
         }
         _arcCam->setLookAtPoint(_steve->position);
         _arcCam->recomputeOrientation();
+        _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _arcCam->getPosition());
     }
     //Jumping
     if (characterIsJumping) {
@@ -420,6 +469,7 @@ void Engine::_updateScene() {
         _steve->position = pos;
         _arcCam->setLookAtPoint(_steve->position);
         _arcCam->recomputeOrientation();
+        _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _arcCam->getPosition());
 
     }
     // whenever a hero is selected -> arcball and first person
@@ -457,6 +507,7 @@ void Engine::_updateScene() {
 
                         _arcCam->setLookAtPoint(_steve->position);
                         _arcCam->recomputeOrientation();
+                        _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _arcCam->getPosition());
                     }
                     // walk backward
                     if (_keys[GLFW_KEY_S]) {
@@ -475,6 +526,7 @@ void Engine::_updateScene() {
                         }
                         _arcCam->setLookAtPoint(_steve->position);
                         _arcCam->recomputeOrientation();
+                        _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _arcCam->getPosition());
                     }
                     //jump
                     if (_keys[GLFW_KEY_SPACE]) {
@@ -529,6 +581,7 @@ void Engine::_updateScene() {
 
                         _fpCam->setLookAtPoint(_steve->position);
                         _fpCam->recomputeOrientation();
+                        _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _fpCam->getPosition());
                     }
                     // walk backward
                     if (_keys[GLFW_KEY_S]) {
@@ -605,6 +658,7 @@ void Engine::_updateScene() {
                         _fpCam->setPosition(pos + point);
                         _fpCam->setHead(-head);
                         _fpCam->recomputeOrientation();
+                        _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _fpCam->getPosition());
                     }
 
 
@@ -620,9 +674,11 @@ void Engine::_updateScene() {
     else { // free cam
 		if( _keys[GLFW_KEY_W] ) {
             _freeCam->moveForward(_cameraSpeed.x * 5);
+            _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _freeCam->getPosition());
         }
         else if (_keys[GLFW_KEY_S]) {
             _freeCam->moveBackward(_cameraSpeed.x*5);
+            _blockShaderProgram->setProgramUniform(_blockShaderUniformLocations.eyePos, _freeCam->getPosition());
         }else if (_keys[GLFW_KEY_G]){
             _freeCam->recomputeOrientation();
             for (float i = .1; i <= 4; i = i + 0.01f){
@@ -777,6 +833,23 @@ void Engine::_computeAndSendMatrixUniforms(glm::mat4 modelMtx, glm::mat4 viewMtx
     glm::mat3 normalMtx = glm::mat3(glm::transpose(glm::inverse(modelMtx)));
     _lightingShaderProgram->setProgramUniform(_lightingShaderUniformLocations.normMat, normalMtx);
 
+}
+
+void Engine::_computeAndSendTransformationMatrices(CSCI441::ShaderProgram* shaderProgram,
+                                                        glm::mat4 modelMatrix, glm::mat4 viewMatrix, glm::mat4 projectionMatrix,
+                                                        GLint mvpMtxLocation, GLint modelMtxLocation, GLint normalMtxLocation) {
+    // ensure our shader program is not null
+    if( shaderProgram ) {
+        // precompute the MVP matrix CPU side
+        glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
+        // precompute the Normal matrix CPU side
+        glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(modelMatrix)));
+
+        // send the matrices to the shader
+        shaderProgram->setProgramUniform(mvpMtxLocation, mvpMatrix);
+        shaderProgram->setProgramUniform(modelMtxLocation, modelMatrix);
+        shaderProgram->setProgramUniform(normalMtxLocation, normalMatrix);
+    }
 }
 
 //*************************************************************************************

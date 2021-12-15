@@ -115,6 +115,33 @@ void Chunk::_transferChunkToGPU(std::vector<glm::mat4> blocks) {
     glVertexAttribDivisor(5, 1);
     glVertexAttribDivisor(6, 1);
     // reset
+
+
+
+//    glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(modelMatrix)));
+    std::vector<glm::mat3> normalMtx;
+    for (int i = 0; i < blocks.size(); ++i){
+        normalMtx.push_back(glm::mat3(glm::transpose(glm::inverse(blocks[i]))));
+    }
+    // generate a buffer for the normal mtx
+    glGenBuffers(1, &_normalMtx);
+    glBindBuffer(GL_ARRAY_BUFFER, _normalMtx);
+
+    // send over the normal mtxs
+    glBufferData(GL_ARRAY_BUFFER, normalMtx.size() * sizeof(glm::mat3), &normalMtx[0], GL_STATIC_DRAW);
+
+    glBindVertexArray(_block->getBlockVAO());
+    // vertex attributes
+    glEnableVertexAttribArray(7);
+    glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+    glEnableVertexAttribArray(8);
+    glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
+    glEnableVertexAttribArray(9);
+    glVertexAttribPointer(9, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
+    glVertexAttribDivisor(7, 1);
+    glVertexAttribDivisor(8, 1);
+    glVertexAttribDivisor(9, 1);
+
     glBindVertexArray(0);
 }
 

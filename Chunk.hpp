@@ -40,6 +40,7 @@ private:
 
     glm::mat4* modelMatrices;
     GLuint _instanceMatrix;
+    GLuint _normalMtx;
 
     Block *_block = nullptr;
 

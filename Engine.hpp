@@ -9,6 +9,7 @@
 #include "Steve.hpp"
 #include "ArcCam.hpp"
 #include "FPCam.hpp"
+#include "CSCI441/materials.hpp"
 
 #include <vector>
 #include <ctime>
@@ -148,7 +149,6 @@ private:
     /// \desc chunk
     Chunk* _chunk;
 
-    std::vector<Chunk*> _chunks;
 
     /// \desc the size of the world (controls the ground size and locations of buildings)
     static constexpr GLfloat WORLD_SIZE = 55.0f;
@@ -225,10 +225,47 @@ private:
         GLint vNorm;
     } _lightingShaderAttributeLocations;
 
+    // LIGHT SHADER
+
+    /// \desc type of the light
+    /// \desc 0 - point
+    /// \desc 1 - directional
+    /// \desc 2 - spot
+    GLuint _lightType;
+    /// \desc position of the light for point or spotlight
+    glm::vec3 _lightPos;
+    /// \desc direction of the light for directional or spotlight
+    glm::vec3 _lightDir;
+    /// \desc angle of our spotlight
+    GLfloat _lightAngle;
+
     struct BlockShaderUniformLocations {
         GLint projection;
         GLint view;
         GLint textureMap;
+        /// \desc normal matrix location
+        GLint normalMatrix;
+        /// \desc camera position location
+        GLint eyePos;
+        /// \desc light position location - used for point/spot
+        GLint lightPos;
+        /// \desc light direction location - used for directional/spot
+        GLint lightDir;
+        /// \desc light cone angle location - used for spot
+        GLint lightCutoff;
+        /// \desc color of the light location
+        GLint lightColor;
+        /// \desc type of the light location - 0 point 1 directional 2 spot
+        GLint lightType;
+        /// \desc material diffuse color location
+        GLint materialDiffColor;
+        /// \desc material specular color location
+        GLint materialSpecColor;
+        /// \desc material shininess factor location
+        GLint materialShininess;
+        /// \desc material ambient color location
+        GLint materialAmbColor;
+
     }_blockShaderUniformLocations;
 
     struct BlockShaderAttributeLocations{
@@ -236,7 +273,11 @@ private:
         GLint vertexNormal;
         GLint texCoord;
         GLint instanceMatrix;
+        GLint normalMtx;
     }_blockShaderAttributeLocations;
+
+
+    // END LIGHT SHADER
 
     bool _rightPressed = false;
 
@@ -264,12 +305,21 @@ private:
     /// \param viewMtx camera view matrix
     /// \param projMtx camera projection matrix
     void _computeAndSendMatrixUniforms(glm::mat4 modelMtx, glm::mat4 viewMtx, glm::mat4 projMtx) const;
+    void _computeAndSendTransformationMatrices(glm::mat4 modelMtx, glm::mat4 viewMtx, glm::mat4 projMtx) const;
+
 
     GLuint loadCubeMap(std::vector<std::string> faces);
 
     void _setupTextures();
 
     void _cleanupTextures();
+
+    static void _computeAndSendTransformationMatrices(CSCI441::ShaderProgram* shaderProgram,
+                                                     glm::mat4 modelMatrix, glm::mat4 viewMatrix, glm::mat4 projectionMatrix,
+                                                     GLint mvpMtxLocation, GLint modelMtxLocation = -1, GLint normalMtxLocation = -1);
+
+    void _setMaterialProperties(CSCI441::Materials::Material material) const;
+
 };
 /// \desc functions for user interactions
 void keyboard_callback(GLFWwindow *window, int key, int scancode, int action, int mods );
